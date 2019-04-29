@@ -24,16 +24,15 @@ namespace Mastermind
                 PrintRandomGeneratedNumber(randomGeneratedArray);
             }
 
-
-            while (attempt < 10)//Exits the loop after attempt #10
-            {
+            //Exits the loop after attempt #10
+            while (attempt < 10){
                 previousGuess = "";
                 attempt += 1;
 
                 Console.WriteLine("Attempt " + attempt + ":");
 
                 var userInput = Console.ReadLine();
-                var userGuessIntArray = ConvertStringToIntArray(userInput);//Uses a method to convert user input to an int array
+                var userGuessIntArray = ConvertStringToIntArray(userInput, randomGeneratedArray);//Uses a method to convert user input to an int array
 
                 PrintResultOfTheAttempt(previousGuess, randomGeneratedArray, userGuessIntArray);//displays the result of the guess in symbols
             }
@@ -43,20 +42,18 @@ namespace Mastermind
             Thread.Sleep(4000);
         }
 
-        private static int[] ConvertStringToIntArray(string userInput)
+        private static int[] ConvertStringToIntArray(string userInput, int[] randomGeneratedArray)
         {
             //Validation
-            if (userInput.Length < 4)
-            {
-                Console.WriteLine("Not a 4 digit number");
+            if (userInput.Length < randomGeneratedArray.Length){
+                Console.WriteLine("Not a " + randomGeneratedArray.Length + " digit value");
                 userInput = "    ";
             }
 
             //Convertion
             var userGuessCharArray = userInput.ToCharArray();
             var userGuessIntArray = new int[userGuessCharArray.Length]; //every symbol after index 4 is ignored
-            for (int i = 0; i < 4; i++)
-            {
+            for (int i = 0; i < userGuessIntArray.Length; i++){
                 // converts values of every member of the array from ASCII to regular value type. 
                 userGuessIntArray[i] = userGuessCharArray[i] - '0';
             }
@@ -70,25 +67,21 @@ namespace Mastermind
         {
             for (int i = 0; i < randomGeneratedArray.Length; i++)
             {
-                if (randomGeneratedArray[i] == userGuessIntArray[i])
-                {
+                if (randomGeneratedArray[i] == userGuessIntArray[i]){
                     previousGuess += "+";//adds a symbol to a string
 
                 }
-                else if (randomGeneratedArray.Contains(userGuessIntArray[i]))
-                {
+                else if (randomGeneratedArray.Contains(userGuessIntArray[i])){
                     previousGuess += "-";
                 }
-                else
-                {
+                else{
                     previousGuess += " ";
                 }
             }
             Console.WriteLine(previousGuess);
 
-
-            if (previousGuess == "++++")//Ends the game if the number is gueesed correctly
-            {
+            // Ends the game if the number is gueesed correctly
+            if (previousGuess == "++++"){
                 PrintRandomGeneratedNumber(randomGeneratedArray);
                 Console.WriteLine("You've Won!");
                 Thread.Sleep(4000);
@@ -99,10 +92,12 @@ namespace Mastermind
         private static void PrintRandomGeneratedNumber(int[] randomGeneratedArray)//Outputs the Answer
         {
             Console.Write("The random generated number is ");
-            Console.Write(randomGeneratedArray[0]);
-            Console.Write(randomGeneratedArray[1]);
-            Console.Write(randomGeneratedArray[2]);
-            Console.Write(randomGeneratedArray[3] + "\n");
+
+            for (int i = 0; i < randomGeneratedArray.Length; i++){
+                Console.Write(randomGeneratedArray[i]);
+            }
+
+                Console.WriteLine();
         }
     }
 }
